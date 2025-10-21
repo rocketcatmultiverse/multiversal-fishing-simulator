@@ -298,6 +298,24 @@ class GameState {
                 if (fullData) {
                     const saveData = JSON.parse(fullData);
                     this.state = { ...this.state, ...saveData.state };
+                    
+                    // Ensure critical properties exist with default values
+                    if (typeof this.state.multiverseMultiplier === 'undefined') {
+                        this.state.multiverseMultiplier = 1.0;
+                    }
+                    if (typeof this.state.skipCrunchConfirmation === 'undefined') {
+                        this.state.skipCrunchConfirmation = false;
+                    }
+                    if (!this.state.autobuyers) {
+                        this.state.autobuyers = {
+                            rods: false,
+                            nets: false,
+                            bait: false,
+                            multiply: false,
+                            ascend: false
+                        };
+                    }
+                    
                     console.log('Game loaded successfully');
                     return true;
                 }
@@ -399,7 +417,7 @@ class GameState {
             });
             
             // Apply multiverse multiplier
-            totalFPS *= this.state.multiverseMultiplier;
+            totalFPS *= (this.state.multiverseMultiplier || 1.0);
             
             // Add fish per second to accumulator
             if (totalFPS > 0) {

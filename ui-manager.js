@@ -475,7 +475,8 @@ Warnings: ${stats.warnings}`;
         // Update multiverse heading with multiplier
         const multiverseHeading = document.querySelector('#containers-display h3');
         if (multiverseHeading) {
-            const newHeading = `Multiverse (${state.multiverseMultiplier.toFixed(2)}x)`;
+            const multiplier = state.multiverseMultiplier || 1.0;
+            const newHeading = `Multiverse (${multiplier.toFixed(2)}x)`;
             if (multiverseHeading.textContent !== newHeading) {
                 multiverseHeading.textContent = newHeading;
             }
