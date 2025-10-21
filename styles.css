@@ -1,0 +1,647 @@
+/* Multiversal Fishing Simulator - Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    overflow-x: hidden;
+}
+
+/* Newsfeed */
+#newsfeed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #111111;
+    border-bottom: 1px solid #333333;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+#newsfeed-content {
+    display: flex;
+    animation: scroll-news 30s linear infinite;
+    white-space: nowrap;
+}
+
+.news-item {
+    margin-right: 100px;
+    color: #cccccc;
+    font-size: 12px;
+}
+
+@keyframes scroll-news {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Main Game Container */
+#game-container {
+    margin-top: 40px;
+    padding: 20px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Fish Counter */
+#fish-counter {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#fish-counter h1 {
+    font-size: 24px;
+    color: #00ff00;
+}
+
+#fish-display {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+/* Fishing Controls */
+#fishing-controls {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.progress-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#fishing-progress-fill {
+    height: 100%;
+    background-color: rgba(0, 255, 0, 0.6);
+    transition: width 0.1s ease;
+    width: 0%;
+}
+
+.game-button {
+    background-color: #222222;
+    color: #ffffff;
+    border: 2px solid #444444;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-family: 'Courier New', monospace;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 5px;
+    min-width: 200px; /* Ensure consistent width */
+    text-align: center;
+}
+
+.game-button:hover {
+    background-color: #333333;
+    border-color: #666666;
+}
+
+.game-button:disabled {
+    background-color: #111111;
+    color: #666666;
+    border-color: #222222;
+    cursor: not-allowed;
+}
+
+.game-button.primary {
+    background-color: #004400;
+    border-color: #00aa00;
+}
+
+.game-button.primary:hover:not(:disabled) {
+    background-color: #006600;
+    border-color: #00cc00;
+}
+
+.game-button.secondary {
+    background-color: #440044;
+    border-color: #aa00aa;
+}
+
+.game-button.secondary:hover:not(:disabled) {
+    background-color: #660066;
+    border-color: #cc00cc;
+}
+
+.game-button.affordable {
+    border-color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.game-button.unaffordable {
+    opacity: 0.5;
+}
+
+/* Progress Bars */
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #222222;
+    border: 1px solid #444444;
+    margin-top: 10px;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background-color: #00ff00;
+    transition: width 0.1s ease;
+    width: 0%;
+}
+
+#net-progress-fill {
+    background-color: #ff6600;
+}
+
+/* Upgrade Sections */
+#upgrades-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.upgrade-section {
+    background-color: #111111;
+    border: 1px solid #333333;
+    padding: 15px;
+}
+
+.upgrade-section h3 {
+    color: #00ff00;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.upgrade-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin: 5px 0;
+    background-color: #222222;
+    border: 1px solid #444444;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.upgrade-item:hover {
+    background-color: #333333;
+    border-color: #666666;
+}
+
+.upgrade-item.affordable {
+    border-color: #00ff00;
+    background-color: #002200;
+    cursor: pointer;
+}
+
+.upgrade-item.affordable:hover {
+    background-color: #003300;
+    border-color: #00cc00;
+}
+
+.upgrade-item.unaffordable {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.upgrade-item.unaffordable:hover {
+    background-color: #222222;
+    border-color: #444444;
+}
+
+.upgrade-item.purchased {
+    opacity: 0.5;
+    cursor: default;
+    background-color: #111111;
+    border-color: #333333;
+}
+
+.upgrade-item.purchased:hover {
+    background-color: #111111;
+    border-color: #333333;
+}
+
+.upgrade-name {
+    font-weight: bold;
+}
+
+.upgrade-cost {
+    color: #ffaa00;
+    font-size: 12px;
+}
+
+.upgrade-effect {
+    color: #aaaaaa;
+    font-size: 11px;
+}
+
+/* Universe Information */
+#universe-info {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #111111;
+    border: 1px solid #333333;
+}
+
+#universe-info div {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+/* Container Display */
+#containers-display {
+    background-color: #111111;
+    border: 1px solid #333333;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#containers-display h3 {
+    color: #00ff00;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#containers-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.container-item {
+    background-color: #222222;
+    border: 1px solid #444444;
+    padding: 6px 8px;
+    text-align: center;
+    min-width: 100px;
+    font-size: 11px;
+}
+
+.container-item h4 {
+    color: #ffaa00;
+    margin-bottom: 3px;
+    font-size: 11px;
+}
+
+.container-item .fish-per-second {
+    color: #00ff00;
+    font-size: 10px;
+    margin-bottom: 4px;
+}
+
+.container-item .crunch-button {
+    background-color: #660000;
+    color: #ffffff;
+    border: 1px solid #aa0000;
+    padding: 3px 6px;
+    font-size: 9px;
+    cursor: pointer;
+    margin-top: 3px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.container-item .crunch-button:hover {
+    background-color: #880000;
+    border-color: #cc0000;
+}
+
+/* Fish catch animation */
+.fish-catch-animation {
+    position: absolute;
+    pointer-events: none;
+    font-size: 18px;
+    font-weight: bold;
+    color: #00ff00;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    animation: fishCatchFade 2s ease-out forwards;
+}
+
+@keyframes fishCatchFade {
+    0% {
+        opacity: 1;
+        transform: translateY(0px) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-20px) scale(1.1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-40px) scale(0.8);
+    }
+}
+
+.upgrade-item.progression:hover {
+    background-color: #330033;
+    border-color: #880088;
+}
+
+.upgrade-item.progression.affordable {
+    border-color: #ff00ff;
+    background-color: #220022;
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
+}
+
+.upgrade-item.progression.affordable:hover {
+    background-color: #330033;
+    border-color: #ff00ff;
+}
+
+/* Infinity Progress Bar */
+#infinity-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background-color: #111111;
+    border-top: 1px solid #333333;
+    z-index: 1000;
+}
+
+#infinity-progress-fill {
+    height: 100%;
+    background-color: #6600ff;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+#infinity-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    color: #cccccc;
+    pointer-events: none;
+}
+
+/* Debug Console */
+#debug-console {
+    position: fixed;
+    top: 50px;
+    right: 20px;
+    width: 400px;
+    height: 300px;
+    background-color: #111111;
+    border: 1px solid #333333;
+    padding: 15px;
+    z-index: 1001;
+}
+
+#debug-console h3 {
+    color: #ff6600;
+    margin-bottom: 10px;
+}
+
+#debug-input {
+    width: 100%;
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #444444;
+    padding: 5px;
+    font-family: 'Courier New', monospace;
+    margin-bottom: 10px;
+}
+
+#debug-output {
+    height: 200px;
+    overflow-y: auto;
+    background-color: #000000;
+    border: 1px solid #444444;
+    padding: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.margin-bottom {
+    margin-bottom: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #game-container {
+        padding: 10px;
+    }
+    
+    .game-button {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    #upgrades-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #debug-console {
+        width: 90%;
+        right: 5%;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 2px solid #0f3460;
+    border-radius: 10px;
+    padding: 0;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    padding: 15px 20px;
+    border-bottom: 1px solid #0f3460;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    color: #e94560;
+    font-size: 1.5em;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: #e94560;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background-color: rgba(233, 69, 96, 0.2);
+    border-radius: 50%;
+}
+
+.modal-body {
+    padding: 20px;
+    color: #eee;
+    line-height: 1.6;
+}
+
+.modal-body p {
+    margin-bottom: 15px;
+}
+
+.crunch-preview {
+    background: rgba(15, 52, 96, 0.3);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    border: 1px solid #0f3460;
+}
+
+.crunch-preview p {
+    margin-bottom: 10px;
+}
+
+.crunch-options {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #0f3460;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #eee;
+    font-size: 14px;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #0f3460;
+    border-radius: 3px;
+    margin-right: 10px;
+    position: relative;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+    background: #e94560;
+    border-color: #e94560;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label:hover .checkmark {
+    border-color: #e94560;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #0f3460;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e94560, #c73650);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: linear-gradient(135deg, #c73650, #a02a3e);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    color: #eee;
+    border: 1px solid #0f3460;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #16213e, #1a1a2e);
+    transform: translateY(-2px);
+}

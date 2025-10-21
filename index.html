@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiversal Fishing Simulator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Newsfeed Section -->
+    <div id="newsfeed">
+        <div id="newsfeed-content">
+            <span class="news-item">Local fisherman discovers fish can be caught with buttons!</span>
+            <span class="news-item">Scientists baffled by exponential fish growth patterns</span>
+            <span class="news-item">Breaking: New pond discovered in neighboring universe</span>
+            <span class="news-item">Fish prices skyrocket as demand reaches infinity</span>
+            <span class="news-item">Multiversal fishing license now required for advanced anglers</span>
+        </div>
+    </div>
+
+    <!-- Main Game Area -->
+    <div id="game-container">
+        <!-- Fish Counter -->
+        <div id="fish-counter">
+            <h1>Fish: <span id="fish-display">0</span></h1>
+        </div>
+
+        <!-- Fishing Controls -->
+        <div id="fishing-controls">
+            <div class="button-container">
+                <button id="catch-fish-btn" class="game-button primary">Catch Fish</button>
+                <div id="fishing-progress" class="progress-overlay hidden">
+                    <div id="fishing-progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Net Controls -->
+        <div id="net-controls">
+            <button id="collect-nets-btn" class="game-button secondary">Collect Nets (<span id="net-count">0</span>)</button>
+            <div id="net-progress" class="progress-bar">
+                <div id="net-progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Upgrade Sections -->
+        <div id="upgrades-container">
+            <!-- Local Upgrades (apply to current tier only) -->
+            <div class="upgrade-section">
+                <h3>Local Upgrades</h3>
+                <div id="local-upgrades"></div>
+            </div>
+
+            <!-- General Upgrades (persist across tiers) -->
+            <div class="upgrade-section">
+                <h3>General Upgrades</h3>
+                <div id="general-upgrades"></div>
+            </div>
+
+            <!-- Progression Upgrades (Multiply and Ascend) -->
+            <div class="upgrade-section">
+                <h3>Progression</h3>
+                <div id="progression-upgrades"></div>
+            </div>
+
+        <!-- Autobuyers removed -->
+        </div>
+
+        <!-- Multiverse Display -->
+        <div id="containers-display">
+            <h3>Multiverse</h3>
+            <div id="containers-list"></div>
+        </div>
+
+        <!-- Universe Information removed -->
+    </div>
+
+    <!-- Progress Bar -->
+    <div id="infinity-progress">
+        <div id="infinity-progress-fill"></div>
+        <div id="infinity-text">Progress to Infinity Fish</div>
+    </div>
+
+    <!-- Crunch Modal -->
+    <div id="crunch-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Crunch Universe</h2>
+                <button class="modal-close" id="crunch-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Warning:</strong> This action will permanently destroy the selected universe and all its fish per second!</p>
+                <p>However, it will provide a <strong>compounding multiplier</strong> to all fish per second gained from the Multiverse.</p>
+                <p>The multiplier increases with each universe crunched, making future universes more powerful.</p>
+                <div class="crunch-preview">
+                    <p><strong>Current Multiverse Multiplier:</strong> <span id="current-multiplier">1.00x</span></p>
+                    <p><strong>After Crunch:</strong> <span id="new-multiplier">1.00x</span></p>
+                </div>
+                <div class="crunch-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="skip-crunch-confirmation">
+                        <span class="checkmark"></span>
+                        Do not show this confirmation next time
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="confirm-crunch">Crunch Universe</button>
+                <button class="btn btn-secondary" id="cancel-crunch">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Debug Console (hidden by default) -->
+    <div id="debug-console" class="hidden">
+        <h3>Debug Console</h3>
+        <input type="text" id="debug-input" placeholder="Enter debug command...">
+        <div id="debug-output"></div>
+    </div>
+
+    <script src="game-engine.js"></script>
+    <script src="game-state.js"></script>
+    <script src="fishing-mechanics.js"></script>
+    <script src="progression-system.js"></script>
+    <script src="ui-manager.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
