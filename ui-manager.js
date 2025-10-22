@@ -15,6 +15,8 @@ class UIManager {
             debugOutput: null
         };
         
+        this.victoryTriggered = false; // Track if victory sequence has been triggered
+        
         this.newsItems = [
             "Local fisherman discovers fish can be caught with buttons!",
             "Scientists baffled by exponential fish growth patterns",
@@ -25,11 +27,31 @@ class UIManager {
             "Universe #42 reports record-breaking fish harvest",
             "Infinite fish supply discovered in parallel dimension",
             "Fishing rods now available in quantum superposition",
-            "Breaking: Fish have achieved consciousness, demand better working conditions"
+            "Breaking: Fish have achieved consciousness, demand better working conditions",
+            "Quantum fishing hooks revolutionize multiversal angling",
+            "Local pond reaches maximum fish capacity, residents concerned",
+            "New study: Fish actually enjoy being caught repeatedly",
+            "Galactic fishing tournament breaks all previous records",
+            "Scientists discover secret to exponential fish breeding",
+            "Breaking: First fish successfully parallelizes to new universe",
+            "Fishing nets now available in 47 different quantum entanglement states",
+            "Local angler accidentally creates infinite fish loop",
+            "Multiversal fishing association announces new safety protocols",
+            "Fish market crashes as supply exceeds all known mathematics",
+            "Revolutionary bait technology increases catch rates by 69e420",
+            "Breaking: Fish have started organizing labor unions",
+            "New fishing rod design incorporates antimatter dimensions",
+            "Scientists confirm: Fish are actually just really good at stupid math",
+            "Galactic fishing fleet reports mysterious fish disappearances",
+            "Breaking: Fish have learned to use fishing rods themselves",
+            "Multiversal fishing championship ends in infinite tie",
+            "Local fisherman discovers secret to catching imaginary numbers of fish",
+            "Hi mom",
+            "Stack overflow: Most of the time, it's just a pile of fish.",
         ];
         
         this.currentNewsIndex = 0;
-        this.newsUpdateInterval = 5000; // 5 seconds
+        this.newsUpdateInterval = 30000; // 30 seconds to match animation duration
         this.lastNewsUpdate = 0;
         
         // Containers display optimization
@@ -103,27 +125,59 @@ class UIManager {
         const fish = window.gameState.state.fish;
         const infinityFish = window.gameState.createNumber(69, 420); // 69e420
         
-        // Calculate progress percentage
-        let progress = 0;
+        // Check for victory condition first
         if (window.gameState.compareNumbers(fish, infinityFish) >= 0) {
-            progress = 100;
+            if (!this.victoryTriggered) {
+                this.victoryTriggered = true;
+                this.triggerVictorySequence();
+            }
+            return;
+        }
+        
+        // Calculate progress percentage using logarithmic scaling
+        let progress = 0;
+        // Use logarithmic scaling for better progress visualization
+        // Convert both numbers to safe format for comparison
+        const safeFish = window.gameState.toSafeNumber(fish);
+        const safeInfinity = window.gameState.toSafeNumber(infinityFish);
+        
+        // Handle zero or invalid values
+        if (safeFish.base === 0 || safeInfinity.base === 0) {
+            progress = 0;
         } else {
-            // Calculate progress as percentage
-            const fishValue = fish.base * Math.pow(10, fish.exponent);
-            const infinityValue = infinityFish.base * Math.pow(10, infinityFish.exponent);
-            progress = Math.min((fishValue / infinityValue) * 100, 100);
+            // Calculate logarithmic progress
+            // Use the formula: progress = (log10(current) / log10(target)) * 100
+            // This gives us meaningful progress even at small values
+            
+            const fishExponent = safeFish.exponent + Math.log10(Math.abs(safeFish.base));
+            const infinityExponent = safeInfinity.exponent + Math.log10(Math.abs(safeInfinity.base));
+            
+            // Calculate progress as percentage of logarithmic distance
+            progress = Math.min((fishExponent / infinityExponent) * 100, 100);
+            
+            // Ensure progress is never negative
+            progress = Math.max(progress, 0);
         }
         
         this.elements.infinityProgressFill.style.width = `${progress}%`;
         
-        // Update text
-        if (progress >= 100) {
-            this.elements.infinityText.textContent = 'INFINITY FISH ACHIEVED!';
-            this.elements.infinityText.style.color = '#ff0000';
+        // Show logarithmic progress with current fish count
+        const safeFishDisplay = window.gameState.toSafeNumber(fish);
+        let currentMagnitude, targetMagnitude;
+        
+        // Handle zero fish case
+        if (safeFishDisplay.base === 0) {
+            currentMagnitude = 0;
         } else {
-            this.elements.infinityText.textContent = `Progress to Infinity Fish: ${progress.toFixed(2)}%`;
-            this.elements.infinityText.style.color = '#cccccc';
+            const fishExponent = safeFishDisplay.exponent + Math.log10(Math.abs(safeFishDisplay.base));
+            currentMagnitude = Math.floor(fishExponent);
         }
+        
+        const infinityExponent = 420 + Math.log10(69); // 69e420
+        targetMagnitude = Math.floor(infinityExponent);
+        
+        this.elements.infinityText.textContent = `Progress to Infinity Fish: ${progress.toFixed(1)}% (e${currentMagnitude}/e${targetMagnitude})`;
+            this.elements.infinityText.style.color = '#cccccc';
     }
 
     // Container Display
@@ -133,20 +187,20 @@ class UIManager {
         animation.className = 'fish-catch-animation';
         animation.textContent = `+${window.gameState.formatNumber(amount)} Fish`;
         
-        // Position relative to the element
+        // Position to the right of the element
         const rect = element.getBoundingClientRect();
-        animation.style.left = (rect.left + rect.width / 2) + 'px';
-        animation.style.top = (rect.top + rect.height / 2) + 'px';
+        animation.style.left = (rect.right + 10) + 'px'; // 10px to the right of the element
+        animation.style.top = (rect.top + rect.height / 2) + 'px'; // Center vertically
         
         // Add to body
         document.body.appendChild(animation);
         
-        // Remove after animation completes
+        // Remove after animation completes (1 second)
         setTimeout(() => {
             if (animation.parentNode) {
                 animation.parentNode.removeChild(animation);
             }
-        }, 2000);
+        }, 1000);
     }
 
     updateContainerDisplay() {
@@ -168,8 +222,7 @@ class UIManager {
                     
                     containerItem.innerHTML = `
                         <h4>${containerTypeName} #${index + 1}</h4>
-                        <div class="fish-per-second">${window.gameState.formatNumber(window.gameState.createNumber(container.fishPerSecond))} fish/sec</div>
-                        ${containerType === 'universes' ? `<button class="crunch-button" onclick="window.gameState.crunchUniverse(${index})">Crunch</button>` : ''}
+                        <div class="fish-per-second">${window.gameState.formatNumber(window.gameState.createNumber(container.propagatedFPS || container.fishPerSecond))} fish/sec</div>
                     `;
                     
                     containersList.appendChild(containerItem);
@@ -190,27 +243,7 @@ class UIManager {
 
     // Newsfeed
     initializeModals() {
-        // Initialize crunch modal
-        this.crunchModal = document.getElementById('crunch-modal');
-        this.crunchModalClose = document.getElementById('crunch-modal-close');
-        this.confirmCrunch = document.getElementById('confirm-crunch');
-        this.cancelCrunch = document.getElementById('cancel-crunch');
-        this.currentMultiplier = document.getElementById('current-multiplier');
-        this.newMultiplier = document.getElementById('new-multiplier');
-        this.skipConfirmationCheckbox = document.getElementById('skip-crunch-confirmation');
-        
-        // Set up event listeners for modal
-        this.crunchModalClose.addEventListener('click', () => this.hideCrunchModal());
-        this.cancelCrunch.addEventListener('click', () => this.hideCrunchModal());
-        this.confirmCrunch.addEventListener('click', () => this.executeCrunch());
-        
-        // Close modal when clicking outside
-        this.crunchModal.addEventListener('click', (e) => {
-            if (e.target === this.crunchModal) {
-                this.hideCrunchModal();
-            }
-        });
-        
+        // Initialize other modals and elements
         this.selectedUniverseIndex = null;
     }
 
@@ -281,14 +314,14 @@ class UIManager {
                 return `Current fish: base=${fish.base}, exponent=${fish.exponent}, formatted=${window.gameState.formatNumber(fish)}`;
             
             case 'addfish':
-                const amount = Math.floor(parseFloat(args[0]) || 100);
+                const amount = parseFloat(args[0]) || 100;
                 window.gameState.addFish(amount);
-                return `Added ${amount} fish`;
+                return `Added ${window.gameState.formatNumber(window.gameState.toSafeNumber(amount))} fish`;
             
             case 'setfish':
-                const setAmount = Math.floor(parseFloat(args[0]) || 0);
+                const setAmount = parseFloat(args[0]) || 0;
                 window.gameState.setFish(setAmount);
-                return `Set fish to ${setAmount}`;
+                return `Set fish to ${window.gameState.formatNumber(window.gameState.toSafeNumber(setAmount))}`;
             
             case 'addbodies':
                 const bodyCount = parseInt(args[0]) || 1;
@@ -328,15 +361,15 @@ class UIManager {
                 state.universeNumber = 1;
                 state.fish = window.gameState.createNumber(1000000); // Give enough fish to test
                 
-                // Add some universes to multiverse for testing crunch
+                // Add some universes to multiverse for testing
                 state.containers.universes = [
-                    { fishPerSecond: 1000, timestamp: Date.now() - 60000 },
-                    { fishPerSecond: 2000, timestamp: Date.now() - 30000 },
-                    { fishPerSecond: 5000, timestamp: Date.now() }
+                    { fishPerSecond: 1000 },
+                    { fishPerSecond: 2000 },
+                    { fishPerSecond: 5000 }
                 ];
                 
                 window.gameState.save();
-                return 'Reset to Universe stage with test universes for crunching';
+                return 'Reset to Universe stage with test universes';
             
             case 'save':
                 const hash = window.gameState.save();
@@ -476,9 +509,63 @@ Warnings: ${stats.warnings}`;
         const multiverseHeading = document.querySelector('#containers-display h3');
         if (multiverseHeading) {
             const multiplier = state.multiverseMultiplier || 1.0;
-            const newHeading = `Multiverse (${multiplier.toFixed(2)}x)`;
+            // Always show the heading, but only show multiplier if > 1.0
+            if (multiplier > 1.0) {
+                // Handle large multipliers safely
+                const multiplierRegular = window.gameState.toRegularNumber(window.gameState.toSafeNumber(multiplier));
+                const multiplierText = isFinite(multiplierRegular) && multiplierRegular < 1000 
+                    ? multiplierRegular.toFixed(2) 
+                    : window.gameState.formatNumber(window.gameState.toSafeNumber(multiplier));
+                const newHeading = `Multiverse (${multiplierText}x)`;
             if (multiverseHeading.textContent !== newHeading) {
                 multiverseHeading.textContent = newHeading;
+                }
+            } else {
+                // Show just "Multiverse" without multiplier
+                if (multiverseHeading.textContent !== 'Multiverse') {
+                    multiverseHeading.textContent = 'Multiverse';
+                }
+            }
+            multiverseHeading.style.display = 'block';
+        }
+        
+        // Update parallel multiverses display
+        const parallelDisplay = document.getElementById('parallel-multiverses-display');
+        const parallelCount = document.getElementById('parallel-multiverses-count');
+        const parallelizedPropagationFPSDisplay = document.getElementById('parallelized-propagation-fps');
+        const parallelizedPropagationFPSValue = document.getElementById('parallelized-propagation-fps-value');
+        
+        if (parallelDisplay && parallelCount) {
+            if (state.parallelMultiverses > 1) {
+                parallelDisplay.style.display = 'block';
+                const multiplier = window.gameState.getParallelizeMultiplier();
+                const multiplierRegular = window.gameState.toRegularNumber(window.gameState.toSafeNumber(multiplier));
+                const multiplierText = isFinite(multiplierRegular) && multiplierRegular < 1000 
+                    ? multiplierRegular.toFixed(2) 
+                    : window.gameState.formatNumber(window.gameState.toSafeNumber(multiplier));
+                parallelCount.textContent = `${state.parallelMultiverses} (${multiplierText}x)`;
+                
+                // Show parallelized propagation FPS if it exists
+                if (parallelizedPropagationFPSDisplay && parallelizedPropagationFPSValue) {
+                    if (window.gameState.compareNumbers(state.parallelizedPropagationFPS, window.gameState.createNumber(0)) > 0) {
+                        parallelizedPropagationFPSDisplay.style.display = 'block';
+                        parallelizedPropagationFPSValue.textContent = window.gameState.formatNumber(state.parallelizedPropagationFPS);
+                        
+                        // Calculate and display fish per tick (FPS / 10 since we run 10 loops per second)
+                        const fishPerTickElement = document.getElementById('parallelized-propagation-fish-per-tick');
+                        if (fishPerTickElement) {
+                            let fishPerTick = window.gameState.divideNumbers(state.parallelizedPropagationFPS, window.gameState.createNumber(10));
+                            // Apply parallelize multiplier to match actual fish gained
+                            const parallelizeMultiplier = window.gameState.toSafeNumber(window.gameState.getParallelizeMultiplier());
+                            fishPerTick = window.gameState.multiplyNumbers(fishPerTick, parallelizeMultiplier);
+                            fishPerTickElement.textContent = window.gameState.formatNumber(fishPerTick);
+                        }
+                    } else {
+                        parallelizedPropagationFPSDisplay.style.display = 'none';
+                    }
+                }
+            } else {
+                parallelDisplay.style.display = 'none';
             }
         }
         
@@ -502,14 +589,14 @@ Warnings: ${stats.warnings}`;
                     const containerItem = document.createElement('div');
                     containerItem.className = 'container-item';
                     
-                    const fishPerSecond = window.gameState.formatNumber(window.gameState.createNumber(container.fishPerSecond));
-                    const timestamp = new Date(container.timestamp).toLocaleString();
+                    // Handle both safe numbers and regular numbers
+                    const fpsValue = container.propagatedFPS || container.fishPerSecond;
+                    const safeFPS = window.gameState.toSafeNumber(fpsValue);
+                    const fishPerSecond = window.gameState.formatNumber(safeFPS);
                     
                     containerItem.innerHTML = `
                         <h4>${containerTypeName} #${index + 1}</h4>
                         <div class="fish-per-second">${fishPerSecond} fish/sec</div>
-                        <div class="timestamp">${timestamp}</div>
-                        ${containerType === 'universes' ? `<button class="crunch-button" onclick="window.uiManager.showCrunchModal(${index})">Crunch</button>` : ''}
                     `;
                     
                     containersList.appendChild(containerItem);
@@ -524,61 +611,288 @@ Warnings: ${stats.warnings}`;
         Object.keys(containers).forEach(containerType => {
             hash += containerType + ':' + containers[containerType].length + ';';
             containers[containerType].forEach(container => {
-                hash += container.fishPerSecond + ',' + container.timestamp + ';';
+                hash += (container.propagatedFPS || container.fishPerSecond) + ';';
             });
         });
         return hash;
     }
+    // ============================================================================
+    // VICTORY SEQUENCE SYSTEM
+    // ============================================================================
     
-    showCrunchModal(universeIndex) {
-        const state = window.gameState.state;
+    triggerVictorySequence() {
+        console.log('🎉 VICTORY! Infinity Fish achieved!');
         
-        // Check if user has disabled confirmation
-        if (state.skipCrunchConfirmation) {
-            // Skip modal and crunch directly
-            const success = window.gameState.crunchUniverse(universeIndex);
-            if (success) {
-                this.updateContainersDisplay();
-                console.log('Universe crunched! Multiverse multiplier increased.');
-            }
-            return;
+        // Stop the game engine
+        if (window.gameEngine) {
+            window.gameEngine.stop();
         }
         
-        this.selectedUniverseIndex = universeIndex;
+        // Start the simple fade transition
+        this.startFadeTransition();
         
-        // Update multiplier display
-        this.currentMultiplier.textContent = `${state.multiverseMultiplier.toFixed(2)}x`;
-        this.newMultiplier.textContent = `${(state.multiverseMultiplier + 0.1).toFixed(2)}x`;
+        // After fade completes, show victory screen
+        setTimeout(() => {
+            this.showVictoryScreen();
+        }, 1200); // Wait for fade to complete
+    }
+    
+    startFadeTransition() {
+        // Create the fade overlay
+        const fadeOverlay = document.createElement('div');
+        fadeOverlay.id = 'fade-overlay';
+        fadeOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0a0a0a;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        `;
         
-        // Reset checkbox state
-        if (this.skipConfirmationCheckbox) {
-            this.skipConfirmationCheckbox.checked = false;
+        document.body.appendChild(fadeOverlay);
+        
+        // Fade in the overlay
+        setTimeout(() => {
+            fadeOverlay.style.opacity = '1';
+        }, 100);
+        
+        // Keep the overlay until victory screen is ready
+        // The victory screen will remove it when it fades in
+        this.fadeOverlay = fadeOverlay;
+    }
+    
+    showVictoryScreen() {
+        // Remove the fade overlay first
+        if (this.fadeOverlay) {
+            this.fadeOverlay.remove();
+            this.fadeOverlay = null;
         }
         
-        // Show modal
-        this.crunchModal.classList.remove('hidden');
+        // Create victory screen overlay
+        const victoryOverlay = document.createElement('div');
+        victoryOverlay.id = 'victory-screen';
+        victoryOverlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0a0a0a;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+            font-family: 'Courier New', monospace;
+        `;
+        
+        // Create victory content
+        const victoryContent = document.createElement('div');
+        victoryContent.style.cssText = `
+            text-align: center;
+        `;
+        
+        // Victory title
+        const title = document.createElement('h1');
+        title.textContent = 'CONGRATULATIONS!';
+        title.style.cssText = `
+            font-size: 3rem;
+            color: #4ecdc4;
+            margin: 0 0 1rem 0;
+            font-family: 'Courier New', monospace;
+            animation: victoryTextGlow 2s ease-in-out infinite;
+        `;
+        
+        // Victory message
+        const message = document.createElement('h2');
+        message.textContent = 'You have achieved INFINITY FISH!';
+        message.style.cssText = `
+            font-size: 2rem;
+            color: #cccccc;
+            margin: 0 0 1rem 0;
+            font-family: 'Courier New', monospace;
+        `;
+        
+        // Fish count display
+        const fishCount = document.createElement('div');
+        fishCount.textContent = '69e420 Fish';
+        fishCount.style.cssText = `
+            font-size: 2.5rem;
+            color: #4ecdc4;
+            margin: 0 0 2rem 0;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        `;
+        
+        // Action buttons container
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.cssText = `
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        `;
+        
+        // Reset game button
+        const resetButton = document.createElement('button');
+        resetButton.textContent = 'Reset Game';
+        resetButton.style.cssText = `
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background: #333333;
+            color: #cccccc;
+            border: 2px solid #4ecdc4;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        `;
+        
+        // Keep playing button
+        const keepPlayingButton = document.createElement('button');
+        keepPlayingButton.textContent = 'Keep Playing';
+        keepPlayingButton.style.cssText = `
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background: #333333;
+            color: #cccccc;
+            border: 2px solid #4ecdc4;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        `;
+        
+        // Add hover effects
+        resetButton.addEventListener('mouseenter', () => {
+            resetButton.style.background = '#4ecdc4';
+            resetButton.style.color = '#0a0a0a';
+        });
+        
+        resetButton.addEventListener('mouseleave', () => {
+            resetButton.style.background = '#333333';
+            resetButton.style.color = '#cccccc';
+        });
+        
+        keepPlayingButton.addEventListener('mouseenter', () => {
+            keepPlayingButton.style.background = '#4ecdc4';
+            keepPlayingButton.style.color = '#0a0a0a';
+        });
+        
+        keepPlayingButton.addEventListener('mouseleave', () => {
+            keepPlayingButton.style.background = '#333333';
+            keepPlayingButton.style.color = '#cccccc';
+        });
+        
+        // Add button functionality
+        resetButton.addEventListener('click', () => {
+            this.resetGame();
+        });
+        
+        keepPlayingButton.addEventListener('click', () => {
+            this.keepPlaying();
+        });
+        
+        // Assemble the victory screen
+        buttonContainer.appendChild(resetButton);
+        buttonContainer.appendChild(keepPlayingButton);
+        
+        victoryContent.appendChild(title);
+        victoryContent.appendChild(message);
+        victoryContent.appendChild(fishCount);
+        victoryContent.appendChild(buttonContainer);
+        
+        victoryOverlay.appendChild(victoryContent);
+        document.body.appendChild(victoryOverlay);
+        
+        // Fade in the victory screen
+        setTimeout(() => {
+            victoryOverlay.style.opacity = '1';
+        }, 100);
     }
     
-    hideCrunchModal() {
-        this.crunchModal.classList.add('hidden');
-        this.selectedUniverseIndex = null;
+    resetGame() {
+        // Reset the game state
+        if (window.gameState) {
+            window.gameState.reset();
+        }
+        
+        // Reset victory flag
+        this.victoryTriggered = false;
+        
+        // Remove victory screen
+        const victoryScreen = document.getElementById('victory-screen');
+        if (victoryScreen) {
+            victoryScreen.remove();
+        }
+        
+        // Clean up any remaining fade overlay
+        if (this.fadeOverlay) {
+            this.fadeOverlay.remove();
+            this.fadeOverlay = null;
+        }
+        
+        // Clear purchased upgrades list and restore basic upgrades to general upgrades section
+        this.restoreBasicUpgradesAfterReset();
+        
+        // Restart the game engine
+        if (window.gameEngine) {
+            window.gameEngine.start();
+        }
+        
+        // Reset UI
+        this.update();
     }
     
-    executeCrunch() {
-        if (this.selectedUniverseIndex !== null) {
-            // Check if user wants to skip confirmation next time
-            if (this.skipConfirmationCheckbox && this.skipConfirmationCheckbox.checked) {
-                window.gameState.state.skipCrunchConfirmation = true;
-                window.gameState.save();
+    restoreBasicUpgradesAfterReset() {
+        // Clear the purchased upgrades list
+        const purchasedUpgradesList = document.getElementById('purchased-upgrades-list');
+        if (purchasedUpgradesList) {
+            purchasedUpgradesList.innerHTML = '';
+        }
+        
+        // Recreate the progression system to restore basic upgrades to general upgrades section
+        if (window.progressionSystem) {
+            // Clear existing general upgrades
+            const generalUpgradesSection = document.getElementById('general-upgrades');
+            if (generalUpgradesSection) {
+                generalUpgradesSection.innerHTML = '';
             }
             
-            const success = window.gameState.crunchUniverse(this.selectedUniverseIndex);
-            if (success) {
-                this.hideCrunchModal();
-                this.updateContainersDisplay();
-                console.log('Universe crunched! Multiverse multiplier increased.');
-            }
+            // Recreate general upgrades (this will add back the basic upgrades)
+            window.progressionSystem.createGeneralUpgrades();
+            
+            // Update upgrade availability
+            window.progressionSystem.updateUpgradeAvailability();
         }
+    }
+    
+    keepPlaying() {
+        // Remove victory screen
+        const victoryScreen = document.getElementById('victory-screen');
+        if (victoryScreen) {
+            victoryScreen.remove();
+        }
+        
+        // Clean up any remaining fade overlay
+        if (this.fadeOverlay) {
+            this.fadeOverlay.remove();
+            this.fadeOverlay = null;
+        }
+        
+        // Restart the game engine
+        if (window.gameEngine) {
+            window.gameEngine.start();
+        }
+        
+        // Reset victory flag so it can trigger again if they reach infinity again
+        this.victoryTriggered = false;
     }
 }
 

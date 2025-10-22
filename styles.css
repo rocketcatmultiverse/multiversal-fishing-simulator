@@ -32,12 +32,16 @@ body {
     display: flex;
     animation: scroll-news 30s linear infinite;
     white-space: nowrap;
+    align-items: center;
+    height: 100%;
 }
 
 .news-item {
     margin-right: 100px;
     color: #cccccc;
-    font-size: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 40px;
 }
 
 @keyframes scroll-news {
@@ -68,6 +72,9 @@ body {
 #fish-display {
     font-family: 'Courier New', monospace;
     font-weight: bold;
+    display: inline-block;
+    min-width: 200px;
+    text-align: left;
 }
 
 /* Fishing Controls */
@@ -79,6 +86,8 @@ body {
 .button-container {
     position: relative;
     display: inline-block;
+    width: 80%;
+    max-width: 600px;
 }
 
 .progress-overlay {
@@ -100,6 +109,13 @@ body {
     width: 0%;
 }
 
+#net-auto-collect-progress-fill {
+    height: 100%;
+    background-color: rgba(128, 0, 128, 0.6);
+    transition: width 0.1s ease;
+    width: 0%;
+}
+
 .game-button {
     background-color: #222222;
     color: #ffffff;
@@ -110,8 +126,12 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     margin: 5px;
-    min-width: 200px; /* Ensure consistent width */
+    width: 100%; /* Take full width of container */
     text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .game-button:hover {
@@ -176,6 +196,25 @@ body {
     background-color: #ff6600;
 }
 
+/* Net Controls */
+#net-controls {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#net-controls .button-container {
+    position: relative;
+    display: inline-block;
+    width: 80%;
+    max-width: 600px;
+}
+
+#net-controls .game-button {
+    width: 100%;
+    max-width: 600px;
+    display: inline-block;
+}
+
 /* Upgrade Sections */
 #upgrades-container {
     display: grid;
@@ -206,6 +245,10 @@ body {
     border: 1px solid #444444;
     cursor: pointer;
     transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .upgrade-item:hover {
@@ -246,6 +289,51 @@ body {
     border-color: #333333;
 }
 
+/* Max buttons */
+.max-button {
+    background-color: #0066cc;
+    color: #ffffff;
+    border: 1px solid #0088ff;
+    padding: 4px 8px;
+    font-size: 10px;
+    cursor: pointer;
+    margin-left: 8px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.max-button:hover {
+    background-color: #0088ff;
+    border-color: #00aaff;
+}
+
+/* Local Max Buyer Button */
+.local-max-buyer-button {
+    background-color: #660066;
+    color: #ffffff;
+    border: 1px solid #880088;
+    padding: 8px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    width: 100%;
+}
+
+.local-max-buyer-button:hover {
+    background-color: #880088;
+    border-color: #aa00aa;
+}
+
 .upgrade-name {
     font-weight: bold;
 }
@@ -280,6 +368,30 @@ body {
     border: 1px solid #333333;
     padding: 10px;
     margin-bottom: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    /* Reserve space for scrollbar to prevent layout shift */
+    scrollbar-gutter: stable;
+    /* Fallback for browsers that don't support scrollbar-gutter */
+    padding-right: 17px; /* Reserve space for scrollbar */
+}
+
+/* Custom scrollbar styling for the containers display */
+#containers-display::-webkit-scrollbar {
+    width: 17px;
+}
+
+#containers-display::-webkit-scrollbar-track {
+    background: #111111;
+}
+
+#containers-display::-webkit-scrollbar-thumb {
+    background: #444444;
+    border-radius: 3px;
+}
+
+#containers-display::-webkit-scrollbar-thumb:hover {
+    background: #666666;
 }
 
 #containers-display h3 {
@@ -316,22 +428,6 @@ body {
     margin-bottom: 4px;
 }
 
-.container-item .crunch-button {
-    background-color: #660000;
-    color: #ffffff;
-    border: 1px solid #aa0000;
-    padding: 3px 6px;
-    font-size: 9px;
-    cursor: pointer;
-    margin-top: 3px;
-    border-radius: 3px;
-    transition: all 0.2s ease;
-}
-
-.container-item .crunch-button:hover {
-    background-color: #880000;
-    border-color: #cc0000;
-}
 
 /* Fish catch animation */
 .fish-catch-animation {
@@ -342,7 +438,7 @@ body {
     color: #00ff00;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
     z-index: 1000;
-    animation: fishCatchFade 2s ease-out forwards;
+    animation: fishCatchFade 1s ease-out forwards;
 }
 
 @keyframes fishCatchFade {
@@ -376,7 +472,65 @@ body {
     border-color: #ff00ff;
 }
 
-/* Infinity Progress Bar */
+/* Purchased Upgrades Display */
+#purchased-upgrades-display {
+    background-color: #111111;
+    border: 1px solid #333333;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+#purchased-upgrades-display h3 {
+    color: #00ff00;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#purchased-upgrades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.purchased-upgrade-item {
+    background-color: #002200;
+    border: 1px solid #00ff00;
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    color: #00ff00;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.purchased-upgrade-item::before {
+    content: "✓";
+    font-weight: bold;
+}
+
+/* Parallel Multiverses Display */
+#parallel-multiverses-display {
+    background-color: #111111;
+    border: 1px solid #333333;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 1200px;
+    text-align: center;
+}
+
+#parallel-multiverses-display h3 {
+    color: #00ff00;
+    font-size: 18px;
+    margin: 0;
+}
+
+#parallel-multiverses-count {
+    color: #ffffff;
+    font-weight: bold;
+}
 #infinity-progress {
     position: fixed;
     bottom: 0;
@@ -528,6 +682,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .modal-close:hover {
@@ -545,23 +703,6 @@ body {
     margin-bottom: 15px;
 }
 
-.crunch-preview {
-    background: rgba(15, 52, 96, 0.3);
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 15px;
-    border: 1px solid #0f3460;
-}
-
-.crunch-preview p {
-    margin-bottom: 10px;
-}
-
-.crunch-options {
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #0f3460;
-}
 
 .checkbox-label {
     display: flex;

@@ -85,6 +85,8 @@ class GameEngine {
         // Update game state
         if (window.gameState) {
             window.gameState.update(deltaTime);
+            // Process auto-upgrades
+            window.gameState.processAutoUpgrades();
         }
         
         // Update fishing mechanics

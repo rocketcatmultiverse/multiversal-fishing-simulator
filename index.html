@@ -37,7 +37,12 @@
 
         <!-- Net Controls -->
         <div id="net-controls">
-            <button id="collect-nets-btn" class="game-button secondary">Collect Nets (<span id="net-count">0</span>)</button>
+            <div class="button-container">
+                <button id="collect-nets-btn" class="game-button secondary">Collect Nets (<span id="net-count">0</span>)</button>
+                <div id="net-auto-collect-progress" class="progress-overlay hidden">
+                    <div id="net-auto-collect-progress-fill"></div>
+                </div>
+            </div>
             <div id="net-progress" class="progress-bar">
                 <div id="net-progress-fill"></div>
             </div>
@@ -72,7 +77,22 @@
             <div id="containers-list"></div>
         </div>
 
+        <!-- Purchased Upgrades -->
+        <div id="purchased-upgrades-display">
+            <h3>Purchased Upgrades</h3>
+            <div id="purchased-upgrades-list"></div>
+        </div>
+
         <!-- Universe Information removed -->
+    </div>
+
+    <!-- Parallel Multiverses Display -->
+    <div id="parallel-multiverses-display" style="display: none;">
+        <h3>Parallel Multiverses: <span id="parallel-multiverses-count">2 (1.20x)</span></h3>
+        <div id="parallelized-propagation-fps" style="display: none;">
+            <div>Parallelized Propagation FPS: <span id="parallelized-propagation-fps-value">0</span></div>
+            <div>Adjusted fish per tick: <span id="parallelized-propagation-fish-per-tick">0</span></div>
+        </div>
     </div>
 
     <!-- Progress Bar -->
@@ -81,35 +101,6 @@
         <div id="infinity-text">Progress to Infinity Fish</div>
     </div>
 
-    <!-- Crunch Modal -->
-    <div id="crunch-modal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>Crunch Universe</h2>
-                <button class="modal-close" id="crunch-modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Warning:</strong> This action will permanently destroy the selected universe and all its fish per second!</p>
-                <p>However, it will provide a <strong>compounding multiplier</strong> to all fish per second gained from the Multiverse.</p>
-                <p>The multiplier increases with each universe crunched, making future universes more powerful.</p>
-                <div class="crunch-preview">
-                    <p><strong>Current Multiverse Multiplier:</strong> <span id="current-multiplier">1.00x</span></p>
-                    <p><strong>After Crunch:</strong> <span id="new-multiplier">1.00x</span></p>
-                </div>
-                <div class="crunch-options">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="skip-crunch-confirmation">
-                        <span class="checkmark"></span>
-                        Do not show this confirmation next time
-                    </label>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger" id="confirm-crunch">Crunch Universe</button>
-                <button class="btn btn-secondary" id="cancel-crunch">Cancel</button>
-            </div>
-        </div>
-    </div>
 
     <!-- Debug Console (hidden by default) -->
     <div id="debug-console" class="hidden">
